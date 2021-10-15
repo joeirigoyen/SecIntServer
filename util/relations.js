@@ -17,7 +17,7 @@ function applyRelations(sequelize){
         through:"UsuarioEvento",
         as: "eventos",
         foreignKey: "id_usuario",
-        false: false});
+        unique: false});
     //Un Evento puede tener varios Usuarios
     Evento.belongsToMany(Usuario,{
         through: "UsuarioEvento",
