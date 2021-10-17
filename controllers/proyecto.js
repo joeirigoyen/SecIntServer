@@ -15,7 +15,7 @@ exports.postAgregarProyecto = (req, res)=>{
 
 exports.getProyectos = (req,res)=>{
     Proyecto.findAll()
-        .then(eventos=>{
+        .then(proyectos=>{
             console.log("Proyectos:", proyectos);
             res.send(proyectos)
         })

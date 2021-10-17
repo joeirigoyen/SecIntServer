@@ -35,21 +35,19 @@ exports.postAgregarUsuario = (req,res)=>{
         })
 };
 
-exports.postParticipar = (req, res) => {
-    Usuario.findOne({where: {usuario: req.body.id_usuario}}).then(user => {
-        Evento.findOne({where: {id_evento: req.body.id_evento}}).then(event => {
-            user.setEvents([event]);
-            res.send("Participante añadido.");
-        }).catch(error => {
-            console.log(error);
-            res.send("Error.");
-        })
-    }).catch(error => {
-        console.log(error);
-        res.send("Hubo un error.");
-    })
-}
-
-exports.getPoliticas = (req,res)=>{
+exports.getPoliticas = (req,res) => {
     res.sendFile(path.join(__dirname,'..','views','politicas.html'));
 };
+
+exports.getUserById = (req, res) => {
+    Usuario.findAll()
+        .then(users => 
+            res.send(users)).catch(error => {
+                console.log(error);
+                res.send(error);
+            })
+};
+
+exports.penis = (req, res) => {
+    console.log("penis");
+}

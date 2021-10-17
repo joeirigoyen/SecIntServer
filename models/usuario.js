@@ -39,6 +39,14 @@ const Usuario = (sequelize)=> {
             type: Sequelize.STRING,
             allowNull:false,
             primaryKey:true
+        },
+        sec_q: {
+            type: Sequelize.STRING,
+            allowNull:false
+        },
+        sec_a:{
+            type:Sequelize.STRING,
+            allowNull:false
         }
     },
     {
