@@ -7,7 +7,7 @@ exports.postAgregarProyecto = (req, res)=>{
             console.log("Registro exitoso"); 
             res.send("Registro exitoso") 
         })
-        .catch(error=>{
+        .catch(error => {
             console.log(error); 
             res.send("Hubo un error") 
         })

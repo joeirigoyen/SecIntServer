@@ -7,17 +7,21 @@ const path = require("path");
 
 // POST y GET
 exports.postLogin = (req, res)=>{
-    const user = Usuario.findOne({usuario: req.body.usuario});
-    if (user) {
-        const validPassword = bcrypt.compare(req.body.password, user.password);
-        if (validPassword) {
-            res.send("Correct password");
-        } else {
-            res.send("Incorrect password my boy");
-        }
-    } else {
-        res.send("User doesn't exist.")
-    }
+    console.log(req.body)
+    Usuario.findOne({where:{usuario: req.body.usuario}})
+        .then(resultado => {
+            if (resultado) {
+                const validPassword = bcrypt.compare(req.body.password, resultado.password, function(err, resp) {
+                    if (req.body.password != resultado.password) {
+                        res.json({message: resp})
+                        console.log(resp)
+                    }
+                });
+            } else {
+                console.log("User doesn't exist")
+                res.send({message:"inexistent"});
+            }
+        });
 };
 
 exports.postAgregarUsuario = (req,res)=>{
@@ -27,7 +31,7 @@ exports.postAgregarUsuario = (req,res)=>{
         .then(resultado=>{
             console.log("Registro exitoso")
             console.log(resultado)
-            res.send("Éxito jaja")
+            res.send(resultado)
         })
         .catch(error=>{
             console.log(error)
@@ -42,12 +46,19 @@ exports.getPoliticas = (req,res) => {
 exports.getUserById = (req, res) => {
     Usuario.findAll()
         .then(users => 
-            res.send(users)).catch(error => {
-                console.log(error);
-                res.send(error);
-            })
+            res.send(users))
+        .catch(error => {
+            console.log(error);
+            res.send(error);
+        })
 };
 
-exports.penis = (req, res) => {
-    console.log("penis");
+exports.getOrgs = (req, res) => {
+    Usuario.findAll({where : {tipo : 2}})
+        .then(orgs => 
+            res.send(orgs))
+        .catch(error => {
+            console.log(error);
+            res.send(error);
+        })
 }

@@ -7,7 +7,7 @@ router.post('/agregarUsuario',usuarioController.postAgregarUsuario);
 //router.get('/agregarUsuario',usuarioController.postAgregarUsuario);
 router.get('/ids', usuarioController.getUserById);
 router.get('/verUsuarios', usuarioController.getUserById);
-router.get('/penis', usuarioController.penis);
 router.get('/politicas',usuarioController.getPoliticas);
+router.get('/orgs', usuarioController.getOrgs);
 
 module.exports = router;

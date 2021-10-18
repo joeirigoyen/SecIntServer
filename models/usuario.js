@@ -40,6 +40,10 @@ const Usuario = (sequelize)=> {
             allowNull:false,
             primaryKey:true
         },
+        membresiumIdMembresia:{
+            type: Sequelize.INTEGER,
+            allowNull:false
+        },
         sec_q: {
             type: Sequelize.STRING,
             allowNull:false
@@ -47,6 +51,14 @@ const Usuario = (sequelize)=> {
         sec_a:{
             type:Sequelize.STRING,
             allowNull:false
+        },
+        pais:{
+            type:Sequelize.STRING,
+            allowNull:true
+        },
+        descripcion:{
+            type:Sequelize.STRING,
+            allowNull:true
         }
     },
     {
