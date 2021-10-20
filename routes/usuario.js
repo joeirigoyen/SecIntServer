@@ -8,6 +8,7 @@ router.post('/buscarUsuario', usuarioController.postGetUserExists);
 router.post('/buscarPregunta', usuarioController.postGetSecQuestion);
 router.post('/cambiarPassword', usuarioController.postNewPassword);
 router.put('/cambiarPassword', usuarioController.putNewPassword);
+router.put('/checkDate', usuarioController.isValidDate);
 router.post('/existeUsername', usuarioController.getUsername);
 //router.post('/participar', usuarioController.postParticipar);
 //router.get('/agregarUsuario',usuarioController.postAgregarUsuario);

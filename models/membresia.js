@@ -1,4 +1,6 @@
+const { application } = require('express');
 const Sequelize = require('sequelize');
+const sequelize = require('../util/database');
 
 const Membresia = (sequelize)=>{
     sequelize.define('membresia',{

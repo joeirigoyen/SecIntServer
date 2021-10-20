@@ -38,17 +38,35 @@ exports.postLogin = (req, res)=>{
 exports.postAgregarUsuario = (req,res)=>{
     console.log(req.body);
     //Guardar la información en la base de datos
-    Usuario.create(req.body)
+    try {
+        Usuario.create(req.body)
         .then(resultado=>{
-            console.log("Registro exitoso")
-            console.log(resultado)
-            res.send(resultado)
+                console.log("Registro exitoso")
+                console.log(resultado)
+                res.send({status: "succeeded", message: "register successful"})
         })
         .catch(error=>{
             console.log(error)
-            res.send("Hubo un error")
+            res.send({status: "failed", message: "server error"})
         })
+    } catch (RequestError) {
+        console.log("No se puede agregar")
+        res.json({status: "failed", message: "invalid date"})
+    }
 };
+
+exports.isValidDate = (req, res) => {
+    console.log("Called")
+    Usuario.update({fecha_nacimiento: req.body.fecha_nacimiento}, {where: {usuario: "testorg"}})
+    .then(resultado => {
+        console.log("Fecha válida");
+        res.send({status: "succeeded", message: "valid date"});
+    })
+    .catch(error => {
+        console.log("Fecha inválida");
+        res.send({status: "failed", message: "invalid date"});
+    })
+}
 
 exports.postGetUserExists = (req, res) => {
     Usuario.findOne({where: {email: req.body.email}})
@@ -137,8 +155,10 @@ exports.getUsername = (req, res) => {
     Usuario.findOne({where: {usuario: req.body.usuario}})
         .then(user => {
             if (user) {
+                console.log("user already exists")
                 res.json({message: "true"});
             } else {
+                console.log("user doesnt exist yet")
                 res.json({message: "false"});
             }
         })
