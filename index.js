@@ -14,9 +14,12 @@ const eventoRoutes = require("./routes/evento");
 const usuarioeventoRoutes = require("./routes/usuarioevento");
 const proyectoRoutes = require("./routes/proyecto");
 const usuarioproyectoRoutes = require("./routes/usuarioproyecto");
+const { config } = require('./util/config');
 
 // Iniciar API
 const app = express();
+
+// Rutas no protegidas
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -39,3 +42,4 @@ sequelize.sync()
     })
     .catch(error=>console.log(error))
 
+module.exports = {llave: 'a123a'}

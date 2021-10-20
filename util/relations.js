@@ -9,7 +9,10 @@ function applyRelations(sequelize){
     const UsuarioProyecto = sequelize.models.usuarioproyecto;
 
     //Un Usuario tiene muchas donaciones
-    Usuario.hasMany(Donacion);
+    Usuario.hasMany(Donacion,
+        {
+            foreignKey: "id_usuario"
+        });
     //Una Membresia pertenece a un Usuario
     Usuario.belongsTo(Membresia);
     //Un Usuario puede tener varios Eventos

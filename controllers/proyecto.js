@@ -4,8 +4,8 @@ exports.postAgregarProyecto = (req, res)=>{
     console.log(req.body);
     Proyecto.create(req.body)
         .then(resultado=>{
-            console.log("Registro exitoso"); 
-            res.send("Registro exitoso") 
+            console.log(resultado); 
+            res.send(resultado) 
         })
         .catch(error => {
             console.log(error); 
@@ -33,4 +33,12 @@ exports.postProyecto = (req,res)=>{
             res.send(proyecto);
         }
     });
+}
+
+exports.getProyectosFrom = (req, res) => {
+    Proyecto.findAll({where: {org_creadora: req.body.org}})
+        .then(proyectos => {
+            console.log(proyectos)
+            res.send(proyectos)
+        })
 }

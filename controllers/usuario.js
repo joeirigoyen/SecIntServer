@@ -4,22 +4,33 @@ const sequelize = require('../util/database');
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 const path = require("path");
+const jwt = require('jsonwebtoken')
+const llave = 'a123a'
 
 // POST y GET
 exports.postLogin = (req, res)=>{
-    console.log(req.body)
-    Usuario.findOne({where:{usuario: req.body.usuario}})
+    console.log(req.body.user)
+    Usuario.findOne({where:{usuario: req.body.user}})
         .then(resultado => {
             if (resultado) {
                 const validPassword = bcrypt.compare(req.body.password, resultado.password, function(err, resp) {
-                    if (req.body.password != resultado.password) {
-                        res.json({message: resp})
+                    if (!resp) {
+                        res.json({message: "false", username: "", names: "", accType: 0})
+                        console.log(resp)
+                    } else {
+                        const payload = {
+                            check: true
+                        }
+                        const token = jwt.sign(payload, llave, {
+                            expiresIn: 1440
+                        });
+                        res.json({message: "true", username: req.body.user, names: resultado.nombre, accType: resultado.tipo})
                         console.log(resp)
                     }
                 });
             } else {
                 console.log("User doesn't exist")
-                res.send({message:"inexistent"});
+                res.send({message:"inexistent", username: "", names: "", accType: 0});
             }
         });
 };
@@ -39,14 +50,73 @@ exports.postAgregarUsuario = (req,res)=>{
         })
 };
 
+exports.postGetUserExists = (req, res) => {
+    Usuario.findOne({where: {email: req.body.email}})
+        .then(resultado => {
+            if (resultado) {
+                res.json({message: "true"});
+                console.log(resultado)
+            } else {
+                res.json({message: "false"});
+                console.log("No hay resultado")
+            }
+        })
+}
+
+exports.postGetSecQuestion = (req, res) => {
+    Usuario.findOne({where: {email: req.body.email}})
+        .then(resultado => {
+            if (resultado) {
+                res.json({message: "true", sec_q: resultado.sec_q});
+            } else {
+                res.json({message: "false", sec_q: ""});
+            }
+        })
+}
+
+exports.postNewPassword = (req, res) => {
+    Usuario.findOne({where: {email: req.body.email}})
+        .then(resultado => {
+            if (resultado) {
+                bcrypt.compare(req.body.sec_a, resultado.sec_a, function(err, resp) {
+                    if (!resp) {
+                        res.json({message: "false"});
+                        console.log(resp)
+                    } else {
+                        res.json({message: "true"});
+                    }
+                })
+            } else {
+                res.json({message: "inexistent"})
+            }
+        })
+};
+
+exports.putNewPassword = (req, res) => {
+    var value = {password: req.body.password}
+    var selector = {email: req.body.email}
+    const salt = bcrypt.genSaltSync(10, 'a');
+    const encryptedPass = bcrypt.hashSync(req.body.password, salt);
+    Usuario.update(
+        {password: encryptedPass},
+        {where: {email: req.body.email}})
+        .then(response => {
+            res.json({message: "done"})
+        })
+        .catch(error => {
+            res.send(error)
+            console.log(error)
+        })
+};
+
 exports.getPoliticas = (req,res) => {
     res.sendFile(path.join(__dirname,'..','views','politicas.html'));
 };
 
 exports.getUserById = (req, res) => {
-    Usuario.findAll()
-        .then(users => 
-            res.send(users))
+    Usuario.findOne({where: {usuario: req.body.usuario}})
+        .then(user => 
+            res.send(user))
         .catch(error => {
             console.log(error);
             res.send(error);
@@ -60,5 +130,16 @@ exports.getOrgs = (req, res) => {
         .catch(error => {
             console.log(error);
             res.send(error);
+        })
+};
+
+exports.getUsername = (req, res) => {
+    Usuario.findOne({where: {usuario: req.body.usuario}})
+        .then(user => {
+            if (user) {
+                res.json({message: "true"});
+            } else {
+                res.json({message: "false"});
+            }
         })
 }

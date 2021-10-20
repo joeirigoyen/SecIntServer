@@ -38,7 +38,7 @@ const Usuario = (sequelize)=> {
         usuario:{
             type: Sequelize.STRING,
             allowNull:false,
-            primaryKey:true
+            primaryKey:true 
         },
         membresiumIdMembresia:{
             type: Sequelize.INTEGER,
@@ -69,6 +69,10 @@ const Usuario = (sequelize)=> {
                         const salt = await bcrypt.genSaltSync(10, 'a');
                         user.password = bcrypt.hashSync(user.password, salt);
                     }
+                    if (user.sec_a) {
+                        const salt = await bcrypt.genSaltSync(10, 'a');
+                        user.sec_a = bcrypt.hashSync(user.sec_a, salt);
+                    }
                 } catch(error) {
                     const response = {
                         status: 500,
@@ -81,9 +85,14 @@ const Usuario = (sequelize)=> {
             },
             beforeUpdate: async(user) => {
                 try {
+                    console.log("Se mando llamar XD")
                     if (user.password) {
                         const salt = await bcrypt.genSaltSync(10, 'a');
                         user.password = bcrypt.hashSync(user.password, salt);
+                    }
+                    if (user.sec_a) {
+                        const salt = await bcrypt.genSaltSync(10, 'a');
+                        user.sec_a = bcrypt.hashSync(user.sec_a, salt);
                     }
                 } catch(error) {
                     const response = {
@@ -96,15 +105,38 @@ const Usuario = (sequelize)=> {
                 }
             }
         },
+        afterUpdate: async(user) => {
+            try {
+                if (user.password) {
+                    const salt = await bcrypt.genSaltSync(10, 'a');
+                    user.password = bcrypt.hashSync(user.password, salt);
+                }
+            } catch(error) {
+                const response = {
+                    status: 500,
+                    data: {},
+                    error: {
+                        message: "user match failed"
+                    } 
+                };
+            }
+        },
         instanceMethods: {
             validPassword: (password) => {
                 return bcrypt.hashSync(password, this.password);
+            },
+            validSecA: (sec_a) => {
+                return bcrypt.hashSync(sec_a, this.sec_a)
             }
         }
     })
     
     userSchema.prototype.validPassword = async (password, hash) => {
         return await bcrypt.compareSync(password, hash);
+    }
+
+    userSchema.prototype.validSecA = async (sec_a, hash) => {
+        return await bcrypt.compareSync(sec_a, hash);
     }
 };
 

@@ -8,7 +8,8 @@ const Proyecto = (sequelize)=>{
         id_proyecto:{
             type:Sequelize.INTEGER,
             allowNull:false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         nombre:{
             type:Sequelize.STRING,

@@ -8,7 +8,8 @@ const Evento = (sequelize)=>{
         id_evento:{
             type:Sequelize.INTEGER,
             allowNull:false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         nombre:{
             type:Sequelize.STRING,

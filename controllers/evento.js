@@ -7,11 +7,11 @@ exports.postAgregarEvento = (req,res)=>{
         .then(resultado=>{
             console.log("Registro exitoso")
             console.log(resultado)
-            res.send("Éxito jaja")
+            res.send(resultado)
         })
         .catch(error=>{
             console.log(error)
-            res.send("Hubo un error")
+            res.send(resultado)
         })
 };
 
@@ -38,15 +38,11 @@ exports.postEvento = (req,res)=>{
 }
 
 exports.postFindEventosByOrg = (req,res)=>{
-    const evento = Evento.findAll({
+    Evento.findAll({
         where: {
-            org_creadora: req.body.org_creadora
+            org_creadora: req.body.org
         }
     }).then(eventos => {
-        if(eventos.length == 0) {
-            res.send("No existe ese evento.")
-        } else {
-            res.send(eventos);
-        }
+        res.send(eventos)
     });
 }

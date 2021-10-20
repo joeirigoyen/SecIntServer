@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const {applyRelations} = require('./relations');
-const sequelize = new Sequelize('DibujandoUnM','sa','Helloworld9.',{
+const sequelize = new Sequelize('DibujandoUnManana','sa','Helloworld9.',{
     dialect: 'mssql',
     dialectOptions:{
         options:{

@@ -8,19 +8,24 @@ const Donacion = (sequelize)=>{
         id_donacion:{
             type:Sequelize.INTEGER,
             allowNull:false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         cantidad:{
             type:Sequelize.FLOAT,
             allowNull:false 
         },
-        rfc:{
-            type: Sequelize.STRING,
-            allowNull:false
-        },
         fundacion:{
             type: Sequelize.STRING,
             allowNull:false
+        },
+        fecha:{
+            type: Sequelize.STRING,
+            allowNull:true
+        },
+        id_usuario:{
+            type: Sequelize.STRING,
+            allowNull: false
         }
     })
 };
